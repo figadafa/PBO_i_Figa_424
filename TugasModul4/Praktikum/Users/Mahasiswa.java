@@ -1,12 +1,14 @@
 package Praktikum.Users;
+import Praktikum.Data.Item;
 
 import java.util.Scanner;
 import Praktikum.Actions.MahasiswaAction;
 
-
-public class Mahasiswa extends User implements MahasiswaAction{
+public class Mahasiswa extends User implements MahasiswaAction {
     public Mahasiswa(String nama, String nim) {
         super(nama, nim); // menggunakan super constructor
+
+
     }
 
     @Override
@@ -18,12 +20,12 @@ public class Mahasiswa extends User implements MahasiswaAction{
         String InputNIM = scanner.nextLine();
         
         if (InputNama.equals(getNama()) && InputNIM.equals(getNim())) {
-                System.out.println("Login Mahasiswa berhasil!");
-                System.out.println("Nama : " + getNama());
-                System.out.println("NIM  : " + getNim());
-                return true;
+            System.out.println("Login Mahasiswa berhasil!");
+            System.out.println("Nama : " + getNama());
+            System.out.println("NIM  : " + getNim());
+            return true;
         } else {
-            System.out.println("Login Admin gagal!");
+            System.out.println("Login Mahasiswa gagal!");
             return false;
         }
     }
@@ -31,26 +33,41 @@ public class Mahasiswa extends User implements MahasiswaAction{
     @Override
     public void ReportItem() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=======TEMPAT PELAPORAN TEMUAN BARANG========");
-        System.out.println("Nama Barang:");
-        String namaBarang = scanner.nextLine();
-        System.out.println("Deskripsi Barang:");
+        
+        System.out.println("======= TEMPAT PELAPORAN TEMUAN BARANG =======");
+        System.out.print("Nama Barang: ");
+        String nama = scanner.nextLine();
+        System.out.print("Deskripsi Barang: ");
         String deskripsi = scanner.nextLine();
-        System.out.println("Waktu dan Tanggal:");
-        String waktu = scanner.nextLine();
-        System.out.println("Lokasi Barang Ditemukan:");
+        System.out.print("Lokasi Barang Ditemukan: ");
         String lokasi = scanner.nextLine();
-        System.out.println(">> Barang berhasil dilaporkan <<");
-        scanner.close();
-    }
 
+        // Membuat objek Item baru dan menambahkannya ke daftar barang yang dilaporkan
+        Item item = new Item(nama,deskripsi,lokasi);
+        User.reportedItems.add(item); 
+        System.out.println("Pelaporan barang berhasil ditambahkan.");
+    }
+            
     @Override
     public void ViewReportedItem() {
-        System.out.println("Fitur ini belum tersedia.");
+        if (User.reportedItems.isEmpty()) {
+            System.out.println("Tidak ada barang yang dilaporkan.");
+        } else {
+            System.out.println("Daftar Barang yang Dilaporkan:");
+            for (Item item : User.reportedItems) {
+                if (item.getItemStatus().equals("Reported")) {
+                System.out.println(item);
+                
+            }  
+        }
+
+    }     
+}
+    @Override
+    public void displayAppMenu() {
+        System.out.println("=== Menu Mahasiswa ===");
+        System.out.println("1. Lapor Barang Hilang");
+        System.out.println("2. Lihat Daftar Barang yang Dilaporkan");
+        System.out.println("0. Keluar");
     }
-    
-  
-    
-    
-    
 }
